@@ -1,19 +1,26 @@
 #!/usr/bin/env python2.7
-import os, time
+import os
+import sys
 
-test_routes = [
-  '',
-  '?_route=toggle_ia&slug=tv.101002210220',
-  '?_route=home&play=tv.101002210220&_l=.pvr',
-  '?_route=clear',
-  '?_route=home&play=tv.101002210220&_l=.pvr',
+sys.path.append(os.path.realpath('../script.module.matthuisman/lib'))
+
+import resources.lib.config
+from resources.lib.controller import Controller
+
+SEPERATOR = "*"*50
+ROUTES = [
+    #'',
+    '?_route=home',
 ]
 
-if __name__ == '__main__':
-    try:
-      for route in test_routes:
-          print("Testing route: {0}\n".format(route))
-          os.system('default.py "" "{0}"'.format(route))
-          print("*"*100)
-    except:
-        pass
+print(SEPERATOR)
+if len(sys.argv) > 1:
+    print("TEST: '{0}'\n".format(sys.argv[1]))
+    Controller().route(sys.argv[1])
+    print(SEPERATOR)
+    sys.exit()
+
+for route in ROUTES:
+    print("TEST: '{0}'\n".format(route))
+    Controller().route(route)
+    print(SEPERATOR)

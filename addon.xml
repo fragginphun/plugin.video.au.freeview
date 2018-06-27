@@ -1,30 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.au.freeview" name="IPTV AU" provider-name="MattHuisman.nz" version="0.1.0">
+<addon id="plugin.video.au.freeview" name="IPTV AU" provider-name="MattHuisman.nz" commit="X" version="X">
   <requires>
-    <import addon="xbmc.python" version="2.1.0"/>
-    <import addon="script.module.requests"/>
-    <import addon="script.module.wvhelper"/>
+    <import addon="script.module.matthuisman"/>
   </requires>
   <extension point="xbmc.python.pluginsource" library="default.py" provides="video">
     <provides>video</provides>
   </extension>
   <extension point="xbmc.addon.metadata">
-    <description lang="en">Watch all your favourite AU Freeview channels!. Change the region (default is Melbourne) in the addon settings.</description>
+    <description lang="en">Watch all your favourite AU IPTV streams!
+You can change the region (default = Sydney) in the addon settings.</description>
     <license>GNU General Public License, v2</license>
     <language></language>
-    <website>http://www.matthuisman.nz</website>
-    <news>0.1.0 (15/06/2018)
-- Rename add-on to IPTV AU + a lick of paint
-- Change 'Use Inpustream' to a per channel option (use context menu to add / remove)
-- Revert 'use xbmc.Player()' but still hopefully have no resume / watched statuses
-    
-0.0.9 (14/06/2018)
-- Change to use xbmc.Player().play() for live streams (disables annyoing resume / watched)
-- Re-write add-on to bring in-line with other add-ons
-- Update icon
-- Add new "Enable Inputstream" context menu item.
-  This will make the add-on try to use Inputstream Adaptive to play the channel.
-  Inputstream allows for faster playback. 
-  Note: It won't work on all streams - You can disable it via context menu.</news>
+    <website>https://www.matthuisman.nz</website>
+    <news></news>
   </extension>
 </addon>
