@@ -13,7 +13,7 @@ class Controller(BaseController):
         slugs = sorted(channels, key=lambda k: channels[k].get('channel', channels[k]['title']))
         items = [channels[slug] for slug in slugs]
 
-        self._view.items(items, cache=False)
+        self._view.items(items, cache=False, title=config.REGION)
 
     def toggle_ia(self, params):
         slug = params.get('slug')
@@ -36,11 +36,10 @@ class Controller(BaseController):
     def _get_channels(self):
         channels = {}
         
-        cache_key = 'm3u8_{0}'.format(config.REGION)
-        data = config.CACHE.get(cache_key)
+        data = config.CACHE.get(config.M3U8_FILE)
         if not data:
             data = self._api.get(config.M3U8_FILE).json()
-            config.CACHE.set(cache_key, data, expiry=config.CACHE_TIME, use_file=True)
+            config.CACHE.set(config.M3U8_FILE, data, expiry=config.CACHE_TIME, use_file=True)
 
         ia_enabled = config.SETTINGS.get('ia_enabled', [])
 
