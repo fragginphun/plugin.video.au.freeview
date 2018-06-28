@@ -9,8 +9,13 @@ from resources.lib.controller import Controller
 
 SEPERATOR = "*"*50
 ROUTES = [
-    #'',
+    '',
     '?_route=home',
+    '?_route=home&play=tv.redbull.tv&_l=.pvr',
+    '?_route=toggle_ia&slug=tv.redbull.tv',
+    '?_route=home&play=tv.redbull.tv&_l=.pvr',
+    '?_route=clear',
+    '?_route=service',
 ]
 
 print(SEPERATOR)

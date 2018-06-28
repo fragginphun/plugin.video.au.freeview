@@ -6,10 +6,10 @@ class Config(BaseConfig):
         super(Config, self).__init__(addon_id)
 
         if self.KODI:
-            REGION = self.ADDON.getSetting('region').strip()
+            self.REGION = self.ADDON.getSetting('region').strip()
         else:
-            REGION = 'Sydney'
+            self.REGION = 'Sydney'
 
-        self.M3U8_FILE = 'http://iptv.matthuisman.nz/au/{0}/tv.json'.format(REGION)
+        self.M3U8_FILE = 'http://iptv.matthuisman.nz/au/{0}/tv.json'.format(self.REGION)
 
 g.config = Config()

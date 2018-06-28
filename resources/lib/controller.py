@@ -36,11 +36,11 @@ class Controller(BaseController):
     def _get_channels(self):
         channels = {}
         
-        cache_key = 'm3u8'
+        cache_key = 'm3u8_{0}'.format(config.REGION)
         data = config.CACHE.get(cache_key)
         if not data:
             data = self._api.get(config.M3U8_FILE).json()
-            config.CACHE.set(cache_key, data, expiry=config.CACHE_TIME, use_file=False)
+            config.CACHE.set(cache_key, data, expiry=config.CACHE_TIME, use_file=True)
 
         ia_enabled = config.SETTINGS.get('ia_enabled', [])
 
