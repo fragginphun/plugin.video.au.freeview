@@ -39,7 +39,7 @@ class Controller(BaseController):
         data = config.CACHE.get(config.M3U8_FILE)
         if not data:
             data = self._api.get(config.M3U8_FILE).json()
-            config.CACHE.set(config.M3U8_FILE, data, expiry=config.CACHE_TIME, use_file=True)
+            config.CACHE.set(config.M3U8_FILE, data, expiry=config.CACHE_TIME)
 
         ia_enabled = config.SETTINGS.get('ia_enabled', [])
 
