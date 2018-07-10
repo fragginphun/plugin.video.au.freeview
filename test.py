@@ -1,31 +1,18 @@
 #!/usr/bin/env python2.7
 import os
 import sys
-
 sys.path.append(os.path.realpath('../script.module.matthuisman/lib'))
 
-import resources.lib.config
+from matthuisman.tester import run_test
 from resources.lib.controller import Controller
 
-SEPERATOR = "*"*50
 ROUTES = [
     '',
     '?_route=home',
     '?_route=home&play=tv.redbull.tv&_l=.pvr',
     '?_route=toggle_ia&slug=tv.redbull.tv',
     '?_route=home&play=tv.redbull.tv&_l=.pvr',
-    '?_route=clear',
-    '?_route=service',
+   # '?_route=clear',
 ]
 
-print(SEPERATOR)
-if len(sys.argv) > 1:
-    print("TEST: '{0}'\n".format(sys.argv[1]))
-    Controller().route(sys.argv[1])
-    print(SEPERATOR)
-    sys.exit()
-
-for route in ROUTES:
-    print("TEST: '{0}'\n".format(route))
-    Controller().route(route)
-    print(SEPERATOR)
+run_test(Controller, ROUTES)

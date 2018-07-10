@@ -1,5 +1,8 @@
-from matthuisman.globs import config
+import requests
+
 from matthuisman.controller import Controller as BaseController
+
+from . import config
 
 class Controller(BaseController):
     def home(self, params):
@@ -13,7 +16,7 @@ class Controller(BaseController):
         slugs = sorted(channels, key=lambda k: channels[k].get('channel', channels[k]['title']))
         items = [channels[slug] for slug in slugs]
 
-        self._view.items(items, cache=False, title=config.REGION)
+        self._view.items(items, cache=False, title=self._addon['region'])
 
     def toggle_ia(self, params):
         slug = params.get('slug')
@@ -21,7 +24,7 @@ class Controller(BaseController):
         channels = self._get_channels()
         channel = channels[slug]
 
-        ia_enabled = config.SETTINGS.get('ia_enabled', [])
+        ia_enabled = self._addon.cache.get('ia_enabled', [])
 
         if slug in ia_enabled:
             ia_enabled.remove(slug)
@@ -30,18 +33,17 @@ class Controller(BaseController):
             ia_enabled.append(slug)
             self._view.notification('Inputstream Enabled', heading=channel['title'], icon=channel['images']['thumb'])
 
-        config.SETTINGS.set('ia_enabled', ia_enabled)
+        self._addon.cache['ia_enabled'] = ia_enabled
         self._view.refresh()
 
     def _get_channels(self):
         channels = {}
-        
-        data = config.CACHE.get(config.M3U8_FILE)
-        if not data:
-            data = self._api.get(config.M3U8_FILE).json()
-            config.CACHE.set(config.M3U8_FILE, data, expiry=config.CACHE_TIME)
 
-        ia_enabled = config.SETTINGS.get('ia_enabled', [])
+        url = config.M3U8_FILE.format(self._addon['region'])
+        func = lambda: requests.get(url).json()
+        data = self._addon.cache.function(url, func, expires=config.CACHE_TIME)
+
+        ia_enabled = self._addon.cache.get('ia_enabled', [])
 
         for slug in data:
             channel = data[slug]
@@ -77,7 +79,8 @@ class Controller(BaseController):
                 'video': channel.get('video',{}),
                 'audio': channel.get('audio',{}),
                 'context': context,
-                'options': {'type': 'hls' if use_ia else '', 'get_location': use_ia, 'headers': channel.get('headers', {})},
+                'vid_type': 'hls',
+                'options': {'use_ia': use_ia, 'get_location': use_ia, 'headers': channel.get('headers', {})},
             }
 
             if channel.get('channel'):
