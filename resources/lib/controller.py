@@ -16,7 +16,7 @@ class Controller(BaseController):
         slugs = sorted(channels, key=lambda k: channels[k].get('channel', channels[k]['title']))
         items = [channels[slug] for slug in slugs]
 
-        self._view.items(items, cache=False, title=self._addon['region'])
+        self._view.items(items, title=self._addon['region'])
 
     def toggle_ia(self, params):
         slug = params.get('slug')
@@ -24,7 +24,7 @@ class Controller(BaseController):
         channels = self._get_channels()
         channel = channels[slug]
 
-        ia_enabled = self._addon.cache.get('ia_enabled', [])
+        ia_enabled = self._addon.data.get('ia_enabled', [])
 
         if slug in ia_enabled:
             ia_enabled.remove(slug)
@@ -33,7 +33,7 @@ class Controller(BaseController):
             ia_enabled.append(slug)
             self._view.notification('Inputstream Enabled', heading=channel['title'], icon=channel['images']['thumb'])
 
-        self._addon.cache['ia_enabled'] = ia_enabled
+        self._addon.data['ia_enabled'] = ia_enabled
         self._view.refresh()
 
     def _get_channels(self):
@@ -43,7 +43,7 @@ class Controller(BaseController):
         func = lambda: requests.get(url).json()
         data = self._addon.cache.function(url, func, expires=config.CACHE_TIME)
 
-        ia_enabled = self._addon.cache.get('ia_enabled', [])
+        ia_enabled = self._addon.data.get('ia_enabled', [])
 
         for slug in data:
             channel = data[slug]
