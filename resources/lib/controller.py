@@ -16,7 +16,7 @@ class Controller(BaseController):
         slugs = sorted(channels, key=lambda k: channels[k].get('channel', channels[k]['title']))
         items = [channels[slug] for slug in slugs]
 
-        self._view.items(items, title=self._addon['region'])
+        self._view.items(items, title=self._addon['region'], cache=False)
 
     def toggle_ia(self, params):
         slug = params.get('slug')
