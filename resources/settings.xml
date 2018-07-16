@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
   <setting label="30000" id="region" type="labelenum" default="Sydney" lvalues="32001|32002|32003|32004|32005|32006|32007|32008" />
-  <setting label="30001" type="action" action="RunPlugin(plugin://$ID/?_route=clear)"/>
+  
+  <setting label="30100" type="action" action="RunPlugin(plugin://$ID/?_route=clear)"/>
 </settings>

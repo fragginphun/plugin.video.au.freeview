@@ -15,8 +15,9 @@ class Controller(BaseController):
         
         slugs = sorted(channels, key=lambda k: channels[k].get('channel', channels[k]['title']))
         items = [channels[slug] for slug in slugs]
+        items.append({'title':'Settings', 'url': self._router.get(self.settings)})
 
-        self._view.items(items, title=self._addon['region'], cache=False)
+        self._view.items(items, title=self._addon.settings.get('region'), cache=False)
 
     def toggle_ia(self, params):
         slug = params.get('slug')
@@ -39,11 +40,11 @@ class Controller(BaseController):
     def _get_channels(self):
         channels = {}
 
-        url = config.M3U8_FILE.format(self._addon['region'])
+        url = config.M3U8_FILE.format(self._addon.settings.get('region'))
         func = lambda: requests.get(url).json()
         data = self._addon.cache.function(url, func, expires=config.CACHE_TIME)
 
-        ia_enabled = self._addon.data.get('ia_enabled', [])
+        ia_hls_enabled = self._addon.data.get('ia_hls_enabled', [])
 
         for slug in data:
             channel = data[slug]
@@ -55,18 +56,18 @@ class Controller(BaseController):
             }
 
             context = []
-            use_ia = False
-
+            use_ia_hls = False
             url = channel['mjh_sub']
-            if url.startswith('http'):
-                use_ia = slug in ia_enabled
 
-                if use_ia:
+            if url.startswith('http'):
+                use_ia_hls = slug in ia_hls_enabled
+
+                if use_ia_hls:
                     url = channel['mjh_master']
-                    context.append(["Disable Inputstream", "XBMC.RunPlugin({0})".format(
+                    context.append(["Disable Inputstream HLS", "XBMC.RunPlugin({0})".format(
                         self._router.get(self.toggle_ia, {'slug': slug}))])
                 else:
-                    context.append(["Enable Inputstream", "XBMC.RunPlugin({0})".format(
+                    context.append(["Enable Inputstream HLS", "XBMC.RunPlugin({0})".format(
                         self._router.get(self.toggle_ia, {'slug': slug}))])
 
             item = {
@@ -80,7 +81,7 @@ class Controller(BaseController):
                 'audio': channel.get('audio',{}),
                 'context': context,
                 'vid_type': 'hls',
-                'options': {'use_ia': use_ia, 'get_location': use_ia, 'headers': channel.get('headers', {})},
+                'options': {'use_ia_hls': use_ia_hls, 'get_location': use_ia_hls, 'headers': channel.get('headers', {})},
             }
 
             if channel.get('channel'):
