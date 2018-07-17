@@ -10,7 +10,7 @@ ROUTES = [
     '',
     '?_route=home',
     '?_route=home&play=tv.redbull.tv&_l=.pvr',
-    '?_route=toggle_ia&slug=tv.redbull.tv',
+    '?_route=toggle_ia_hls&slug=tv.redbull.tv',
     '?_route=home&play=tv.redbull.tv&_l=.pvr',
    # '?_route=clear',
 ]

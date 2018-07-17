@@ -19,22 +19,22 @@ class Controller(BaseController):
 
         self._view.items(items, title=self._addon.settings.get('region'), cache=False)
 
-    def toggle_ia(self, params):
+    def toggle_ia_hls(self, params):
         slug = params.get('slug')
 
         channels = self._get_channels()
         channel = channels[slug]
 
-        ia_enabled = self._addon.data.get('ia_enabled', [])
+        ia_hls_enabled = self._addon.data.get('ia_hls_enabled', [])
 
-        if slug in ia_enabled:
-            ia_enabled.remove(slug)
-            self._view.notification('Inputstream Disabled', heading=channel['title'], icon=channel['images']['thumb'])
+        if slug in ia_hls_enabled:
+            ia_hls_enabled.remove(slug)
+            self._view.notification('Inputstream HLS Disabled', heading=channel['title'], icon=channel['images']['thumb'])
         else:
-            ia_enabled.append(slug)
-            self._view.notification('Inputstream Enabled', heading=channel['title'], icon=channel['images']['thumb'])
+            ia_hls_enabled.append(slug)
+            self._view.notification('Inputstream HLS Enabled', heading=channel['title'], icon=channel['images']['thumb'])
 
-        self._addon.data['ia_enabled'] = ia_enabled
+        self._addon.data['ia_hls_enabled'] = ia_hls_enabled
         self._view.refresh()
 
     def _get_channels(self):
@@ -65,10 +65,10 @@ class Controller(BaseController):
                 if use_ia_hls:
                     url = channel['mjh_master']
                     context.append(["Disable Inputstream HLS", "XBMC.RunPlugin({0})".format(
-                        self._router.get(self.toggle_ia, {'slug': slug}))])
+                        self._router.get(self.toggle_ia_hls, {'slug': slug}))])
                 else:
                     context.append(["Enable Inputstream HLS", "XBMC.RunPlugin({0})".format(
-                        self._router.get(self.toggle_ia, {'slug': slug}))])
+                        self._router.get(self.toggle_ia_hls, {'slug': slug}))])
 
             item = {
                 'title': channel['name'],
