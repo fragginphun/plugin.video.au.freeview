@@ -10,6 +10,7 @@
   <extension point="xbmc.addon.metadata">
     <description lang="en">Watch all your favourite AU IPTV streams!
 You can change the region (default = Sydney) in the addon settings.</description>
+    <reuselanguageinvoker>true</reuselanguageinvoker>
     <license></license>
     <language></language>
     <website>https://www.matthuisman.nz/2017/08/au-freeview-kodi-add-on.html</website>

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
-  <setting label="30000" id="region" type="labelenum" default="Sydney" lvalues="32001|32002|32003|32004|32005|32006|32007|32008" />
-  
-  <setting label="30100" type="action" action="RunPlugin(plugin://$ID/?_route=clear)"/>
+    <setting label="30000" id="region_index" type="enum" default="0" lvalues="30001|30002|30003|30004|30005|30006|30007|30008" />
+    <setting type="sep"/>
+    <setting label="32017" type="bool" id="use_cache" default="true"/>
+    <setting label="32019" type="action" action="RunPlugin(plugin://$ID/?_=_reset)"/>
+    <setting id="_fresh" type="bool" visible="false" default="true"/>
 </settings>
