@@ -1,7 +1,7 @@
-from matthuisman import plugin, cache, settings
+from matthuisman import plugin, settings
 from matthuisman.session import Session
 
-from .constants import M3U8_URL, CHANNELS_EXPIRY, REGIONS
+from .constants import M3U8_URL, REGIONS
 from .language import _
 
 @plugin.route('')
@@ -39,6 +39,5 @@ def play(slug):
         art = False,
     )
 
-@cache.cached(CHANNELS_EXPIRY)
 def get_channels(region):
     return Session().get(M3U8_URL.format(region)).json()
