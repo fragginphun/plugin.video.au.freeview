@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.au.freeview" name="IPTV AU" provider-name="MattHuisman.nz" version="0.13.0">
+<addon id="plugin.video.au.freeview" name="IPTV AU" provider-name="MattHuisman.nz" version="0.13.1">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
     <import addon="script.module.requests"/>
@@ -14,8 +14,7 @@ You can change the region (default = Sydney) in the addon settings.</description
     <license></license>
     <language></language>
     <website>https://www.matthuisman.nz/2017/08/au-freeview-kodi-add-on.html</website>
-    <news>Setting to enable HLS
-    Setting to disable using substreams
+    <news>Setting to disable using substreams
     Re-implement short (5 minute) cache
     Update Common</news>
   </extension>
