@@ -5,6 +5,7 @@ from contextlib import contextmanager
 import xbmcgui, xbmc, xbmcgui
 
 from .constants import ADDON_NAME, ADDON_ICON, ADDON_FANART
+from .exceptions import GUIError
 
 def _make_heading(heading=None):
     return heading if heading else ADDON_NAME
@@ -37,7 +38,7 @@ def progress(message, heading=None, percent=0):
     try:
         yield dialog
     except:
-        raise
+        raise GUIError('Progress dialog error')
     finally:
         dialog.close()
 
@@ -54,6 +55,11 @@ def ok(message, heading=None):
         lines = (heading,)
 
     return xbmcgui.Dialog().ok(heading, *lines)
+
+def text(message, heading=None, **kwargs):
+    heading = _make_heading(heading)
+    
+    return xbmcgui.Dialog().textviewer(heading, message)
 
 def yes_no(message, heading=None, **kwargs):
     heading = _make_heading(heading)

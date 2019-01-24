@@ -52,6 +52,10 @@ msgctxt "#30008"
 msgid "Canberra"
 msgstr ""
 
+msgctxt "#30009"
+msgid "Use Substreams"
+msgstr ""
+
 ##COMMON##
 
 msgctxt "#32000"
@@ -67,7 +71,7 @@ msgid "Are you sure you want to clear this plugins data?"
 msgstr ""
 
 msgctxt "#32003"
-msgid "Clear Data OK"
+msgid "Data Cleared"
 msgstr ""
 
 msgctxt "#32004"
@@ -188,4 +192,8 @@ msgstr ""
 
 msgctxt "#32031"
 msgid "No Results"
+msgstr ""
+
+msgctxt "#32032"
+msgid "Unexpected Error :("
 msgstr ""

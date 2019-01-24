@@ -1,4 +1,5 @@
 import sys
+import traceback
 
 from functools import wraps
 
@@ -8,17 +9,15 @@ from . import router, gui, settings, database, cache, userdata, inputstream, sig
 from .constants import ROUTE_SETTINGS, ROUTE_RESET, ROUTE_SERVICE, ROUTE_CLEAR_CACHE, ROUTE_IA_SETTINGS, ROUTE_IA_INSTALL, ADDON_ICON, ADDON_FANART
 from .log import log
 from .language import _
+from .exceptions import PluginError
 
 ## SHORTCUTS
 url_for         = router.url_for
 dispatch        = router.dispatch
 ############
 
-class Error(Exception):
-    pass
-
 def exception(msg=''):
-    raise Error(msg)
+    raise PluginError(msg)
 
 logged_in   = False
 
@@ -28,7 +27,7 @@ def login_required():
         @wraps(f)
         def decorated_function(*args, **kwargs):
             if not logged_in:
-                raise Error(_.PLUGIN_LOGIN_REQUIRED)
+                raise PluginError(_.PLUGIN_LOGIN_REQUIRED)
 
             return f(*args, **kwargs)
         return decorated_function
@@ -68,7 +67,17 @@ def _error(e):
     except:
         error = e.message.encode('utf-8')
 
-    gui.ok(error, heading=_.PLUGIN_ERROR)
+    if not hasattr(e, 'heading'):
+        e.heading = _.PLUGIN_ERROR
+
+    log.error(error)
+    gui.ok(error, heading=e.heading)
+    resolve()
+
+@signals.on(signals.ON_EXCEPTION)
+def _exception(e):
+    log.exception(e)
+    gui.text(traceback.format_exc(), heading=_.PLUGIN_EXCEPTION)
     resolve()
 
 @signals.on(signals.AFTER_DISPATCH)
@@ -77,7 +86,7 @@ def _close():
 
 @route('')
 def _home():
-    raise Error(_.PLUGIN_NO_DEFAULT_ROUTE)
+    raise PluginError(_.PLUGIN_NO_DEFAULT_ROUTE)
 
 @route(ROUTE_IA_SETTINGS)
 def _ia_settings():
