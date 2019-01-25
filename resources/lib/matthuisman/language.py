@@ -63,6 +63,7 @@ class BaseLanguage(object):
     SEARCH_FOR                  = 32030
     NO_RESULTS                  = 32031
     PLUGIN_EXCEPTION            = 32032
+    ERROR_DOWNLOADING_FILE      = 32033
 
     def __getattribute__(self, name):
         attr = object.__getattribute__(self, name)

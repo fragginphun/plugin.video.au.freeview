@@ -197,3 +197,7 @@ msgstr ""
 msgctxt "#32032"
 msgid "Unexpected Error :("
 msgstr ""
+
+msgctxt "#32033"
+msgid "Failed to download required file: {filename}"
+msgstr ""

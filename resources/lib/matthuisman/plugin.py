@@ -6,7 +6,7 @@ from functools import wraps
 import xbmc, xbmcplugin
 
 from . import router, gui, settings, database, cache, userdata, inputstream, signals
-from .constants import ROUTE_SETTINGS, ROUTE_RESET, ROUTE_SERVICE, ROUTE_CLEAR_CACHE, ROUTE_IA_SETTINGS, ROUTE_IA_INSTALL, ADDON_ICON, ADDON_FANART
+from .constants import ROUTE_SETTINGS, ROUTE_RESET, ROUTE_SERVICE, ROUTE_CLEAR_CACHE, ROUTE_IA_SETTINGS, ROUTE_IA_INSTALL, ADDON_ICON, ADDON_FANART, ADDON_ID
 from .log import log
 from .language import _
 from .exceptions import PluginError
@@ -71,13 +71,28 @@ def _error(e):
         e.heading = _.PLUGIN_ERROR
 
     log.error(error)
+    _close()
+
     gui.ok(error, heading=e.heading)
     resolve()
 
 @signals.on(signals.ON_EXCEPTION)
 def _exception(e):
     log.exception(e)
-    gui.text(traceback.format_exc(), heading=_.PLUGIN_EXCEPTION)
+    _close()
+
+    exc_type, exc_value, exc_traceback = sys.exc_info()
+
+    tb = []
+    for trace in reversed(traceback.extract_tb(exc_traceback)):
+        if ADDON_ID in trace[0]:
+            trace = list(trace)
+            trace[0] = trace[0].split(ADDON_ID)[1]
+            tb.append(trace)
+
+    error = '{}\n{}'.format(''.join(traceback.format_exception_only(exc_type, exc_value)), ''.join(traceback.format_list(tb)))
+
+    gui.text(error, heading=_.PLUGIN_EXCEPTION)
     resolve()
 
 @signals.on(signals.AFTER_DISPATCH)

@@ -91,9 +91,15 @@ def install_widevine(reinstall=False):
     if not reinstall and ver_slug == ia_addon.getSetting(IA_VERSION_KEY):
         return True
 
+    ia_addon.setSetting(IA_VERSION_KEY, '')
+
     from .session import Session
 
-    widevine = Session().get(IA_MODULES_URL).json()['widevine']
+    r = Session().get(IA_MODULES_URL)
+    if r.status_code != 200:
+        raise InputStreamError(_(_.ERROR_DOWNLOADING_FILE, filename=IA_MODULES_URL.split('/')[-1]))
+
+    widevine = r.json()['widevine']
 
     if kodi_version < 18:
         raise InputStreamError(_(_.IA_KODI18_REQUIRED, system=system))
@@ -119,7 +125,6 @@ def install_widevine(reinstall=False):
         os.makedirs(decryptpath)
 
     if not _download(url, wv_path):
-        ia_addon.setSetting(IA_VERSION_KEY, '')
         return False
 
     ia_addon.setSetting(IA_VERSION_KEY, ver_slug)
@@ -153,9 +158,10 @@ def _get_system_arch():
 
 def _download(url, dst_path):
     from .session import Session
-    
+
     resp = Session().get(url, stream=True)
-    resp.raise_for_status()
+    if resp.status_code != 200:
+        raise InputStreamError(_(_.ERROR_DOWNLOADING_FILE, filename=url.split('/')[-1]))
 
     total_length = float(resp.headers.get('content-length'))
 
@@ -184,4 +190,5 @@ def _download(url, dst_path):
         return False
 
     #md5 check?
+    
     return True
