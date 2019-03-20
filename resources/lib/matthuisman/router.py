@@ -55,7 +55,7 @@ def url_for(func_or_url, is_live=False, **kwargs):
     else:
         return build_url(func_or_url, is_live, **kwargs)
 
-def build_url(url, is_live=False, **kwargs):
+def build_url(url, is_live=False, addon_id=ADDON_ID, **kwargs):
     kwargs[ROUTE_TAG] = url
 
     params = []
@@ -66,7 +66,7 @@ def build_url(url, is_live=False, **kwargs):
     if is_live:
         params.append((ROUTE_LIVE_TAG, ROUTE_LIVE_SUFFIX))
 
-    return 'plugin://{0}/?{1}'.format(ADDON_ID, urlencode(params))
+    return 'plugin://{0}/?{1}'.format(addon_id, urlencode(params))
 
 # router.dispatch('?_=_settings')
 def dispatch(url):

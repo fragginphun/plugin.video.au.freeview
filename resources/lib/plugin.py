@@ -1,7 +1,7 @@
-from matthuisman import plugin, cache, settings, inputstream
+from matthuisman import plugin, settings, inputstream
 from matthuisman.session import Session
 
-from .constants import M3U8_URL, REGIONS, CACHE_TIME
+from .constants import M3U8_URL, REGIONS
 from .language import _
 
 @plugin.route('')
@@ -33,18 +33,18 @@ def play(slug):
     region  = REGIONS[settings.getInt('region_index')]
     channel = get_channels(region)[slug]
 
-    path = channel['mjh_master']
-    hls = settings.getBool('use_ia_hls', False) and channel.get('hls', False)
-    if not hls and settings.getBool('use_substreams', True):
-        path = channel['mjh_sub']
-    
-    return plugin.Item(
-        path = path,
+    item = plugin.Item(
+        path = channel['mjh_master'],
         headers = channel['headers'],
         art = False,
-        inputstream = inputstream.HLS() if hls else None,
     )
+    
+    if settings.getBool('use_substreams', True):
+        item.path = channel['mjh_sub']
+    elif settings.getBool('use_ia_hls', False) and channel.get('hls', False):
+        item.inputstream = inputstream.HLS()
 
-@cache.cached(expires=CACHE_TIME)
+    return item
+
 def get_channels(region):
     return Session().get(M3U8_URL.format(region)).json()
