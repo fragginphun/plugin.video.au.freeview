@@ -41,7 +41,7 @@ def play(slug):
     
     if settings.getBool('use_substreams', True):
         item.path = channel['mjh_sub']
-    elif settings.getBool('use_ia_hls', False) and channel.get('hls', False):
+    elif channel.get('hls', False) and settings.getBool('use_ia_hls', False):
         item.inputstream = inputstream.HLS()
 
     return item
