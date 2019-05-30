@@ -1,12 +1,12 @@
 from matthuisman import plugin, settings, inputstream
 from matthuisman.session import Session
 
-from .constants import M3U8_URL, REGIONS
+from .constants import M3U8_URL, REGIONS, PLAYLIST_URL, EPG_URL
 from .language import _
 
 @plugin.route('')
-def home():
-    region  = REGIONS[settings.getInt('region_index')]
+def home(**kwargs):
+    region  = get_region()
     channels = get_channels(region)
 
     folder = plugin.Folder(title=_(_.REGIONS[region]))
@@ -16,7 +16,7 @@ def home():
 
         folder.add_item(
             label = channel['name'],
-            path  = plugin.url_for(play, slug=slug, is_live=True),
+            path  = plugin.url_for(play, slug=slug, _is_live=True),
             info  = {'plot': channel.get('description')},
             video = channel.get('video', {}),
             audio = channel.get('audio', {}),
@@ -29,8 +29,8 @@ def home():
     return folder
 
 @plugin.route()
-def play(slug):
-    region  = REGIONS[settings.getInt('region_index')]
+def play(slug, **kwargs):
+    region  = get_region()
     channel = get_channels(region)[slug]
 
     item = plugin.Item(
@@ -47,4 +47,15 @@ def play(slug):
     return item
 
 def get_channels(region):
-    return Session().get(M3U8_URL.format(region)).json()
+    return Session().get(M3U8_URL.format(region=region)).json()
+
+def get_region():
+    return REGIONS[settings.getInt('region_index')]
+
+@plugin.route()
+def playlist(output, **kwargs):
+    Session().chunked_dl(PLAYLIST_URL.format(region=get_region()), output)
+
+@plugin.route()
+def epg(output, **kwargs):
+    Session().chunked_dl(EPG_URL.format(region=get_region()), output)
