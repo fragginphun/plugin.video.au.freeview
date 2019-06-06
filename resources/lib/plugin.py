@@ -1,3 +1,5 @@
+import xbmc
+
 from matthuisman import plugin, settings, inputstream
 from matthuisman.session import Session
 
@@ -54,8 +56,20 @@ def get_region():
 
 @plugin.route()
 def playlist(output, **kwargs):
-    Session().chunked_dl(PLAYLIST_URL.format(region=get_region()), output)
+    xbmc.executebuiltin('Skin.SetString(merge,started)')
+    try:
+        Session().chunked_dl(PLAYLIST_URL.format(region=get_region()), output)
+    except:
+        xbmc.executebuiltin('Skin.SetString(merge,error)')
+    else:
+        xbmc.executebuiltin('Skin.SetString(merge,ok)')
 
 @plugin.route()
 def epg(output, **kwargs):
-    Session().chunked_dl(EPG_URL.format(region=get_region()), output)
+    xbmc.executebuiltin('Skin.SetString(merge,started)')
+    try:
+        Session().chunked_dl(EPG_URL.format(region=get_region()), output)
+    except:
+        xbmc.executebuiltin('Skin.SetString(merge,error)')
+    else:
+        xbmc.executebuiltin('Skin.SetString(merge,ok)')
