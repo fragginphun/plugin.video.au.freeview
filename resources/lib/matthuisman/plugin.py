@@ -61,6 +61,7 @@ def merge():
                 result = f(*args, **kwargs)
             except:
                 xbmc.executebuiltin('Skin.SetString(merge,error)')
+                raise
             else:
                 xbmc.executebuiltin('Skin.SetString(merge,ok)')
                 return result
