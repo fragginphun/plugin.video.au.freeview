@@ -65,6 +65,9 @@ def input(message, default='', hide_input=False, **kwargs):
         
     return xbmcgui.Dialog().input(message, default, **kwargs)
 
+def numeric(message, default='', type=0, **kwargs):
+    return xbmcgui.Dialog().numeric(type, message, defaultt=str(default), **kwargs)
+
 def ok(message, heading=None):
     heading = _make_heading(heading)
 
@@ -150,9 +153,6 @@ class Item(object):
             if not self.info.get('title'):
                 self.info['title'] = self.label
 
-        if self.path:
-            li.setPath(self.path)
-
         if self.info:
             li.setInfo('video', self.info)
 
@@ -207,11 +207,14 @@ class Item(object):
                 li.setMimeType(self.inputstream.mimetype)
                 li.setContentLookup(False)
 
-        if headers and self.path.startswith('http'):
-            li.setPath(self.path + '|{}'.format(headers))
+        if headers and self.path and self.path.startswith('http'):
+            self.path += '|{}'.format(headers)
+
+        if self.path:
+            li.setPath(self.path)
 
         return li
 
     def play(self):
         li = self.get_li()
-        xbmc.Player().play(li.getPath(), li)
+        xbmc.Player().play(self.path, li)

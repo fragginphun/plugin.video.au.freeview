@@ -72,6 +72,17 @@ class BaseLanguage(object):
     SERVICE_DELAY               = 32039
     MD5_MISMATCH                = 32040
     NO_ITEMS                    = 32041
+    IA_QUALITY                  = 32042
+    IA_QUALITY_MAX              = 32043
+    IA_QUALITY_1080P            = 32044
+    IA_QUALITY_720P             = 32045
+    IA_QUALITY_480P             = 32046
+    IA_QUALITY_SET              = 32047
+    IA_QUALITY_540P             = 32048
+    NO_AUTOPLAY_FOUND           = 32049
+    CONFIRM_MIGRATE             = 32050
+    MIGRATE_OK                  = 32051
+    NO_ERROR_MSG                = 32052
 
     def __getattribute__(self, name):
         attr = object.__getattribute__(self, name)

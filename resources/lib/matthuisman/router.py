@@ -5,7 +5,7 @@ from . import signals
 from .constants import ROUTE_TAG, ADDON_ID, ROUTE_LIVE_TAG, ROUTE_LIVE_SUFFIX, ROUTE_URL_TAG
 from .log import log
 from .language import _
-from .exceptions import RouterError
+from .exceptions import RouterError, Exit
 
 _routes = {}
 
@@ -25,7 +25,10 @@ def route(url):
 # @router.parse_url('?_=_settings')
 def parse_url(url):
     if url.startswith('?'):
-        params   = dict(parse_qsl(unquote(url.lstrip('?'))))
+        params = dict(parse_qsl(url.lstrip('?'), keep_blank_values=True))
+        for key in params:
+            params[key] = unquote(params[key])
+
         _url     = params.pop(ROUTE_TAG, '')
     else:
         params = {}
@@ -71,6 +74,17 @@ def build_url(url, addon_id=ADDON_ID, **kwargs):
         params.append((ROUTE_LIVE_TAG, ROUTE_LIVE_SUFFIX))
 
     return 'plugin://{0}/?{1}'.format(addon_id, urlencode(params))
+
+def redirect(url):
+    log.debug('Redirect -> {}'.format(url))
+
+    if not url.startswith('?') and '?' in url:
+        url = '?' + url.split('?')[1]
+
+    function, params = parse_url(url)
+    function(**params)
+    
+    raise Exit()
 
 # router.dispatch('?_=_settings')
 def dispatch(url):
