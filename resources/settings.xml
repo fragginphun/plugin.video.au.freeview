@@ -14,6 +14,8 @@
     <category label="32036">
         <setting label="32037" id="verify_ssl" type="bool" default="true"/>
         <setting label="32019" type="action" action="RunPlugin(plugin://$ID/?_=_reset)"/>
-        <setting id="_fresh" type="bool" visible="false" default="true"/>
+
+        <setting id="_fresh" type="bool" default="true" visible="false"/>
+        <setting id="_userdata" type="text" default="{}" visible="false"/>
     </category>
 </settings>
