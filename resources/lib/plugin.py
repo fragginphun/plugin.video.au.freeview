@@ -11,7 +11,7 @@ def home(**kwargs):
 
     folder = plugin.Folder(title=_(_.REGIONS[region]))
 
-    for slug in sorted(channels, key=lambda k: channels[k].get('channel', channels[k]['name'])):
+    for slug in sorted(channels, key=lambda k: (channels[k].get('network', ''), channels[k].get('name', ''))):
         channel = channels[slug]
 
         folder.add_item(
@@ -62,7 +62,7 @@ def playlist(output, **kwargs):
     with open(output, 'wb') as f:
         f.write('#EXTM3U\n')
 
-        for slug in sorted(channels, key=lambda k: channels[k].get('channel', channels[k]['name'])):
+        for slug in sorted(channels, key=lambda k: (channels[k].get('network', ''), channels[k].get('name', ''))):
             channel = channels[slug]
 
             f.write('#EXTINF:-1 tvg-id="{id}" tvg-chno="{chno}" tvg-logo="{logo}",{name}\n{path}\n'.format(
