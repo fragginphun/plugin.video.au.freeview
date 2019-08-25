@@ -45,6 +45,9 @@ def play(slug, **kwargs):
     if channel.get('hls', False) and settings.getBool('use_ia_hls', False):
         item.inputstream = inputstream.HLS()
 
+        # IA doesnt yet support cookies when redirected
+        item.path = Session().head(item.path).headers.get('location')
+
     return item
 
 def get_channels(region):
