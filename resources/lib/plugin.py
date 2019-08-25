@@ -34,7 +34,7 @@ def play(slug, **kwargs):
     channel = get_channels(region)[slug]
 
     item = plugin.Item(
-        path     = channel['mjh_master'],
+        path     = channel['master_url'],
         headers  = channel['headers'],
         info     = {'plot': channel.get('description')},
         video    = channel.get('video', {}),
@@ -44,9 +44,6 @@ def play(slug, **kwargs):
 
     if channel.get('hls', False) and settings.getBool('use_ia_hls', False):
         item.inputstream = inputstream.HLS()
-
-        # IA doesnt yet support cookies when redirected
-        item.path = Session().head(item.path).headers.get('location')
 
     return item
 
