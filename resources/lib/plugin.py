@@ -1,5 +1,4 @@
 from matthuisman import plugin, settings, inputstream
-from matthuisman.constants import ADDON_NAME
 from matthuisman.session import Session
 
 from .constants import M3U8_URL, REGIONS, EPG_URL
@@ -66,8 +65,8 @@ def playlist(output, **kwargs):
         for slug in sorted(channels, key=lambda k: (channels[k].get('network', ''), channels[k].get('name', ''))):
             channel = channels[slug]
 
-            f.write('#EXTINF:-1 tvg-id="{id}" tvg-chno="{chno}" group-title="{group}" tvg-logo="{logo}",{name}\n{path}\n'.format(
-                id=slug, logo=channel.get('logo', '').encode('utf8'), group=ADDON_NAME.encode('utf8'), name=channel['name'].encode('utf8'), chno=channel.get('channel', ''), 
+            f.write('#EXTINF:-1 tvg-id="{id}" tvg-chno="{chno}" tvg-logo="{logo}",{name}\n{path}\n'.format(
+                id=slug, logo=channel.get('logo', '').encode('utf8'), name=channel['name'].encode('utf8'), chno=channel.get('channel', ''), 
                     path=plugin.url_for(play, slug=slug, _is_live=True)))
 
 @plugin.route()
