@@ -42,7 +42,7 @@ def play(slug, **kwargs):
         art      = {'thumb': channel.get('logo')},
     )
 
-    if channel.get('hls', False) and settings.getBool('use_ia_hls', False):
+    if channel.get('hls', False):
         item.inputstream = inputstream.HLS()
 
     return item
