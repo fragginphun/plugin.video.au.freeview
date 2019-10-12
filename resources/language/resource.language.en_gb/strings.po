@@ -236,7 +236,11 @@ msgctxt "#32041"
 msgid "No Items"
 msgstr ""
 
-
+msgctxt "#32042"
+msgid "This manifest contains multiple periods\n"
+"Support for this will be introduced in Kodi 19\n"
+"This content most likely will not play (or will be unreliable)"
+msgstr ""
 
 msgctxt "#32043"
 msgid "Best"
@@ -281,7 +285,11 @@ msgctxt "#32052"
 msgid "Unknown Error"
 msgstr ""
 
-
+msgctxt "#32053"
+msgid "This manifest contains multiple base urls\n"
+"Support for this will hopefully be introduced in Kodi 19\n"
+"There is a chance this content may not play"
+msgstr ""
 
 msgctxt "#32054"
 msgid "Custom"
@@ -291,7 +299,10 @@ msgctxt "#32055"
 msgid "Ask"
 msgstr ""
 
-
+msgctxt "#32056"
+msgid "Playback URL returned error code: {code}\n"
+"Make sure your entitled to this content and your IP address is allowed (not geo-blocked)"
+msgstr ""
 
 msgctxt "#32057"
 msgid "Playback URL returned error code: {error_code}"

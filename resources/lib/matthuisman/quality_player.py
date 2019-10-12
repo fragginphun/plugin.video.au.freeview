@@ -102,6 +102,7 @@ def set_settings(min_bandwidth, max_bandwidth, is_ia=False):
             'MINBANDWIDTH':        min_bandwidth,
             'MAXBANDWIDTH':        max_bandwidth,
             'IGNOREDISPLAY':       'true',
+            'HDCPOVERRIDE':        'true',
             'STREAMSELECTION':     '0',
             'MEDIATYPE':           '0',
             'MAXRESOLUTION':       '0',
@@ -181,6 +182,7 @@ def parse(item, quality=None):
         result = resp.ok
 
     if not result:
+        gui.ok(_(_.QUALITY_PARSE_ERROR, code=resp.status_code))
         return
 
     parser.parse(resp.text)

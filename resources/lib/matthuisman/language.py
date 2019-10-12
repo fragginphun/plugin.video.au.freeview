@@ -72,7 +72,7 @@ class BaseLanguage(object):
     SERVICE_DELAY               = 32039
     MD5_MISMATCH                = 32040
     NO_ITEMS                    = 32041
-
+    MULTI_PERIOD_WARNING        = 32042
     QUALITY_BEST                = 32043
     HTTP_TIMEOUT                = 32044
     HTTP_RETRIES                = 32045
@@ -83,10 +83,10 @@ class BaseLanguage(object):
     CONFIRM_MIGRATE             = 32050
     MIGRATE_OK                  = 32051
     NO_ERROR_MSG                = 32052
-
+    MULTI_BASEURL_WARNING       = 32053
     QUALITY_CUSTOM              = 32054
     QUALITY_ASK                 = 32055
-
+    QUALITY_PARSE_ERROR         = 32056
     PLAYBACK_ERROR              = 32057
     WV_INSTALLED                = 32058
     MAX_BANDWIDTH               = 32059

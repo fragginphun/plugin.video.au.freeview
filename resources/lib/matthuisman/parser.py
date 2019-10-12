@@ -3,8 +3,10 @@ import xml.etree.ElementTree as ET
 
 from xml.parsers import expat
 
+from . import gui
 from .language import _
 from .constants import QUALITY_BEST, QUALITY_LOWEST
+from .util import get_kodi_version
 
 class Parser(object):
     def __init__(self):
@@ -110,6 +112,14 @@ class MPD(Parser):
 
         with DisableXmlNamespaces():
             root = ET.fromstring(text)
+
+        num_baseurls = len(root.findall("./BaseURL"))
+        num_periods  = len(root.findall("./Period"))
+        
+        if num_periods > 1 and get_kodi_version() < 19:
+            gui.ok(_.MULTI_PERIOD_WARNING)
+        elif num_baseurls > 1 and get_kodi_version() < 19:
+            gui.ok(_.MULTI_BASEURL_WARNING)
 
         self._streams = []
         for adap_set in root.findall(".//AdaptationSet"):

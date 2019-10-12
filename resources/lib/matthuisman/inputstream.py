@@ -19,6 +19,9 @@ class InputstreamItem(object):
     license_key   = ''
     mimetype      = ''
     checked       = None
+    license_data  = None
+    challenge     = None
+    response      = None
 
     def do_check(self):
         return False
@@ -55,15 +58,16 @@ class Playready(InputstreamItem):
         return supports_playready()
 
 class Widevine(InputstreamItem):
-    manifest_type = 'mpd'
     license_type  = 'com.widevine.alpha'
-    mimetype      = 'application/dash+xml'
 
-    def __init__(self, license_key=None, content_type='application/octet-stream', challenge='R{SSM}', response=''):
-        self.license_key  = license_key
-        self.content_type = content_type
-        self.challenge    = challenge
-        self.response     = response
+    def __init__(self, license_key=None, content_type='application/octet-stream', challenge='R{SSM}', response='', manifest_type='mpd', mimetype='application/dash+xml', license_data=None):
+        self.license_key   = license_key
+        self.content_type  = content_type
+        self.challenge     = challenge
+        self.response      = response
+        self.manifest_type = manifest_type
+        self.mimetype      = mimetype
+        self.license_data  = license_data
 
     def do_check(self):
         return install_widevine()
