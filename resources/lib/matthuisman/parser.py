@@ -8,6 +8,9 @@ from .language import _
 from .constants import QUALITY_BEST, QUALITY_LOWEST
 from .util import get_kodi_version
 
+class ParserError(Exception):
+    pass
+
 class Parser(object):
     def __init__(self):
         self._streams = []
@@ -64,6 +67,9 @@ class Parser(object):
 
 class M3U8(Parser):
     def parse(self, text):
+        if not text.upper().startswith('#EXTM3U'):
+            raise ParserError(_.QUALITY_BAD_M3U8)
+
         marker = '#EXT-X-STREAM-INF:'
         pattern = re.compile(r'''((?:[^,"']|"[^"]*"|'[^']*')+)''')
 

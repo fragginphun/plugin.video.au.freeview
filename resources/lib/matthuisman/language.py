@@ -87,12 +87,12 @@ class BaseLanguage(object):
     QUALITY_CUSTOM              = 32054
     QUALITY_ASK                 = 32055
     QUALITY_PARSE_ERROR         = 32056
-    PLAYBACK_ERROR              = 32057
+    QUALITY_BAD_M3U8            = 32057
     WV_INSTALLED                = 32058
     MAX_BANDWIDTH               = 32059
     QUALITY_LOWEST              = 32060
     PLAYBACK_QUALITY            = 32061
-
+    QUALITY_NONE_FOUND          = 32062
     PLAY_DEFAULT_ACTION         = 32063
     PLAY_FROM_START             = 32064
     PLAY_FROM_LIVE              = 32065
@@ -104,6 +104,7 @@ class BaseLanguage(object):
     WV_UNKNOWN                  = 32071
     WV_NOT_LATEST               = 32072
     DISABLED                    = 32073
+    QUALITY_HTTP_ERROR          = 32074
 
     def __getattribute__(self, name):
         attr = object.__getattribute__(self, name)

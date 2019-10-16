@@ -8,7 +8,7 @@ from . import userdata, gui, router, inputstream, settings
 from .language import _
 from .constants import QUALITY_TYPES, QUALITY_ASK, QUALITY_BEST, QUALITY_CUSTOM, QUALITY_SKIP, QUALITY_LOWEST, QUALITY_TAG, QUALITY_DISABLED
 from .log import log
-from .parser import M3U8, MPD
+from .parser import M3U8, MPD, ParserError
 
 def select_quality(qualities):
     options = []
@@ -182,12 +182,20 @@ def parse(item, quality=None):
         result = resp.ok
 
     if not result:
-        gui.ok(_(_.QUALITY_PARSE_ERROR, code=resp.status_code))
+        gui.ok(_(_.QUALITY_PARSE_ERROR, error=_(_.QUALITY_HTTP_ERROR, code=resp.status_code)))
         return
 
-    parser.parse(resp.text)
-    qualities = parser.qualities()
-    if len(qualities) < 2:
+    try:
+        parser.parse(resp.text)
+        qualities = parser.qualities()
+        if not qualities:
+            raise ParserError(_.QUALITY_NONE_FOUND)
+    except Exception as e:
+        log.exception(e)
+        gui.ok(_(_.QUALITY_PARSE_ERROR, error=e))
+        return
+
+    if len(qualities) == 1:
         return
 
     if quality == QUALITY_ASK:
