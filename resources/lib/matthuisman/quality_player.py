@@ -6,7 +6,7 @@ import json
 
 from . import userdata, gui, router, inputstream, settings
 from .language import _
-from .constants import QUALITY_TYPES, QUALITY_ASK, QUALITY_BEST, QUALITY_CUSTOM, QUALITY_SKIP, QUALITY_LOWEST, QUALITY_TAG, QUALITY_DISABLED
+from .constants import QUALITY_TYPES, QUALITY_ASK, QUALITY_BEST, QUALITY_CUSTOM, QUALITY_SKIP, QUALITY_LOWEST, QUALITY_TAG, QUALITY_DISABLED, ADDON_DEV
 from .log import log
 from .parser import M3U8, MPD, ParserError
 
@@ -109,6 +109,8 @@ def set_settings(min_bandwidth, max_bandwidth, is_ia=False):
             'MAXRESOLUTIONSECURE': '0',
         }
 
+        inputstream.set_bandwidth_bin(1000000000) #1000m/bit
+
         current_ia_settings = inputstream.get_settings(new_ia_settings.keys())
         if new_ia_settings != current_ia_settings:
             inputstream.set_settings(new_ia_settings)
@@ -123,7 +125,7 @@ def set_settings(min_bandwidth, max_bandwidth, is_ia=False):
             set_gui_settings(new_gui_settings)
             reset_func = lambda: set_gui_settings(current_gui_settings)
 
-    if reset_func:
+    if reset_func and not ADDON_DEV:
         thread = Thread(target=reset_thread, args=(reset_func,))
         thread.daemon = True
         thread.start()
