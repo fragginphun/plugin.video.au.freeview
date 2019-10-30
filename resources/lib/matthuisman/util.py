@@ -3,15 +3,22 @@ import time
 import hashlib
 import shutil
 import platform
+import base64
 import struct
+import json
 
-import xbmc, xbmcaddon
+from kodi_six import xbmc, xbmcaddon
 
 from .language import _
 from .constants import ADDON_ID, ADDON_NAME, ADDON_PROFILE
 from .log import log
 from .exceptions import Error 
 from . import gui
+
+def jwt_data(token):
+    b64_string = token.split('.')[1]
+    b64_string += "=" * ((4 - len(b64_string) % 4) % 4) #fix padding
+    return json.loads(base64.b64decode(b64_string))
 
 def remove_file(file_path):
     try:
@@ -26,8 +33,8 @@ def hash_6(value, default=None):
     if not value:
         return default
 
-    h = hashlib.md5(str(value))
-    return h.digest().encode('base64')[:6]
+    h = hashlib.md5(str(value).encode('utf8'))
+    return base64.b64encode(h.digest()).decode('utf8')[:6]
 
 def md5sum(filepath):
     if not os.path.exists(filepath):
@@ -120,7 +127,7 @@ def migrate(new_addon_id, copy_userdata=True):
         return
 
     if copy_userdata:
-        dst_profile = xbmc.translatePath(dst_addon.getAddonInfo('profile')).decode("utf-8")
+        dst_profile = xbmc.translatePath(dst_addon.getAddonInfo('profile'))
 
         if os.path.exists(dst_profile):
             shutil.rmtree(dst_profile)

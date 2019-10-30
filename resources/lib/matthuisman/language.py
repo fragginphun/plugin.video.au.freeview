@@ -92,7 +92,7 @@ class BaseLanguage(object):
     MAX_BANDWIDTH               = 32059
     QUALITY_LOWEST              = 32060
     PLAYBACK_QUALITY            = 32061
-    QUALITY_NONE_FOUND          = 32062
+
     PLAY_DEFAULT_ACTION         = 32063
     PLAY_FROM_START             = 32064
     PLAY_FROM_LIVE              = 32065
@@ -105,6 +105,7 @@ class BaseLanguage(object):
     WV_NOT_LATEST               = 32072
     DISABLED                    = 32073
     QUALITY_HTTP_ERROR          = 32074
+    IA_ANDROID_REINSTALL        = 32075
 
     def __getattribute__(self, name):
         attr = object.__getattribute__(self, name)
