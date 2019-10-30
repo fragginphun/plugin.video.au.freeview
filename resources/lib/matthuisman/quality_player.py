@@ -79,6 +79,7 @@ def reset_thread(is_ia, old_settings):
             set_gui_settings(old_settings)
 
     log.debug('Settings Reset Thread: DONE')
+    xbmc.executebuiltin('Skin.SetString(quality_reset_thread,)')
 
 def get_gui_settings(keys):
     settings = {}
@@ -125,9 +126,9 @@ def set_settings(min_bandwidth, max_bandwidth, is_ia=False):
         if new_gui_settings != current_settings:
             set_gui_settings(new_gui_settings)
 
-    if current_settings and not ADDON_DEV:
+    if current_settings and xbmc.getInfoLabel('Skin.String(quality_reset_thread)') != '1' and not ADDON_DEV:
+        xbmc.executebuiltin('Skin.SetString(quality_reset_thread,1)')
         thread = Thread(target=reset_thread, args=(is_ia, current_settings))
-        thread.daemon = True
         thread.start()
 
 def get_quality():
