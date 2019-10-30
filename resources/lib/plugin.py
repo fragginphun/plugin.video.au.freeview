@@ -1,5 +1,7 @@
-from matthuisman import plugin, settings, inputstream
-from matthuisman.session import Session
+import codecs
+
+from .matthuisman import plugin, settings, inputstream
+from .matthuisman.session import Session
 
 from .constants import M3U8_URL, REGIONS, EPG_URL
 from .language import _
@@ -59,14 +61,14 @@ def playlist(output, **kwargs):
     region   = get_region()
     channels = get_channels(region)
 
-    with open(output, 'wb') as f:
-        f.write('#EXTM3U\n')
+    with codecs.open(output, 'w', encoding='utf8') as f:
+        f.write(u'#EXTM3U\n')
 
         for slug in sorted(channels, key=lambda k: (channels[k].get('network', ''), channels[k].get('name', ''))):
             channel = channels[slug]
 
-            f.write('#EXTINF:-1 tvg-id="{id}" tvg-chno="{chno}" tvg-logo="{logo}",{name}\n{path}\n'.format(
-                id=slug, logo=channel.get('logo', '').encode('utf8'), name=channel['name'].encode('utf8'), chno=channel.get('channel', ''), 
+            f.write(u'#EXTINF:-1 tvg-id="{id}" tvg-chno="{chno}" tvg-logo="{logo}",{name}\n{path}\n'.format(
+                id=slug, logo=channel.get('logo', ''), name=channel['name'], chno=channel.get('channel', ''), 
                     path=plugin.url_for(play, slug=slug, _is_live=True)))
 
 @plugin.route()
