@@ -11,7 +11,7 @@ def home(**kwargs):
     region  = get_region()
     channels = get_channels(region)
 
-    folder = plugin.Folder(_(_.REGIONS[region]))
+    folder = plugin.Folder(_(_.REGIONS[region]), cacheToDisc=False)
 
     for slug in sorted(channels, key=lambda k: (channels[k].get('network', ''), channels[k].get('name', ''))):
         channel = channels[slug]
