@@ -36,7 +36,7 @@ def play(slug, **kwargs):
     channel = get_channels(region)[slug]
 
     item = plugin.Item(
-        path     = channel['master_url'],
+        path     = channel['mjh_master'],
         headers  = channel['headers'],
         info     = {'plot': channel.get('description')},
         video    = channel.get('video', {}),

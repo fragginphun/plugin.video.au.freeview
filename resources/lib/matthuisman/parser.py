@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 from . import gui
 from .language import _
 from .constants import QUALITY_BEST, QUALITY_LOWEST
-from .util import get_kodi_version
+from .util import get_kodi_version, strip_namespaces
 
 class ParserError(Exception):
     pass
@@ -106,18 +106,6 @@ class M3U8(Parser):
 
 class MPD(Parser):
     def parse(self, text):
-        def strip_namespaces(tree):
-            for el in tree.iter():
-                tag = el.tag
-                if tag and isinstance(tag, str) and tag[0] == '{':
-                    el.tag = tag.partition('}')[2]
-                attrib = el.attrib
-                if attrib:
-                    for name, value in list(attrib.items()):
-                        if name and isinstance(name, str) and name[0] == '{':
-                            del attrib[name]
-                            attrib[name.partition('}')[2]] = value
-
         root = ET.fromstring(text)
         strip_namespaces(root)
 

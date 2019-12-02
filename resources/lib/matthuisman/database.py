@@ -14,7 +14,7 @@ if not os.path.exists(path):
 
 db = peewee.SqliteDatabase(DB_PATH, pragmas=DB_PRAGMAS)
 
-if ADDON_DEV:
+if ADDON_DEV and not int(os.environ.get('QUIET', 0)):
     import logging
     logger = logging.getLogger('peewee')
     logger.addHandler(logging.StreamHandler())
@@ -42,11 +42,11 @@ class PickledField(peewee.BlobField):
 class JSONField(peewee.TextField):
     def db_value(self, value):
         if value is not None:
-            return json.dumps(value)
+            return json.dumps(value, ensure_ascii=False)
 
     def python_value(self, value):
         if value is not None:
-            return json.loads(value)
+            return json.loads(value, encoding='utf8')
 
 class Model(peewee.Model):
     checksum = ''
@@ -71,6 +71,25 @@ class Model(peewee.Model):
     @classmethod
     def set(cls, *args, **kwargs):
         return super(Model, cls).replace(*args, **kwargs).execute()
+
+    @classmethod
+    def bulk_create_lazy(cls, to_create, force=False):
+        batch_size = int(999/len(cls._meta.fields))
+
+        if not to_create or (not force and len(to_create) < batch_size):
+            return False
+
+        cls.bulk_create(to_create, batch_size=batch_size)
+        del to_create[:]
+
+        return True
+
+    @classmethod
+    def bulk_create(cls, *args, **kwargs):
+        if not kwargs.get('batch_size'):
+            kwargs['batch_size'] = int(999/len(cls._meta.fields))
+
+        return super(Model, cls).bulk_create(*args, **kwargs)
 
     @classmethod
     def table_name(cls):

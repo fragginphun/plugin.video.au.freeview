@@ -23,7 +23,7 @@ def select_quality(qualities):
 
     current = userdata.get('last_quality')
 
-    default = 0
+    default = -1
     if current:
         try:
             default = values.index(current)

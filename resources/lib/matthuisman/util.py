@@ -173,3 +173,15 @@ def get_system_arch():
         arch = 'i386'
 
     return system, arch
+
+def strip_namespaces(tree):
+    for el in tree.iter():
+        tag = el.tag
+        if tag and isinstance(tag, str) and tag[0] == '{':
+            el.tag = tag.partition('}')[2]
+        attrib = el.attrib
+        if attrib:
+            for name, value in list(attrib.items()):
+                if name and isinstance(name, str) and name[0] == '{':
+                    del attrib[name]
+                    attrib[name.partition('}')[2]] = value
