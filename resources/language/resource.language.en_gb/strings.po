@@ -52,10 +52,6 @@ msgctxt "#30008"
 msgid "Canberra"
 msgstr ""
 
-msgctxt "#30009"
-msgid "Use Substreams"
-msgstr ""
-
 ## COMMON SETTINGS ##
 
 msgctxt "#32034"
