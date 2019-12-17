@@ -1,7 +1,7 @@
 import codecs
 
-from .matthuisman import plugin, settings, inputstream
-from .matthuisman.session import Session
+from matthuisman import plugin, settings, inputstream
+from matthuisman.session import Session
 
 from .constants import M3U8_URL, REGIONS, EPG_URL
 from .language import _

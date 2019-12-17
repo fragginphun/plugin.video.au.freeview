@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.au.freeview" name="IPTV AU" provider-name="MattHuisman.nz" version="0.15.3">
+<addon id="plugin.video.au.freeview" name="IPTV AU" provider-name="MattHuisman.nz" version="0.15.4">
   <requires>
-    <import addon="xbmc.python" version="2.1.0"/>
-    <import addon="script.module.requests"/>
-    <import addon="script.module.six"/>
-    <import addon="script.module.kodi-six"/>
+    <import addon="script.module.matthuisman"/>
   </requires>
   <extension point="xbmc.python.pluginsource" library="default.py" provides="video">
     <provides>video</provides>
@@ -17,6 +14,6 @@ You can change the region (default = Sydney) in the addon settings.</description
     <license></license>
     <language></language>
     <website>https://www.matthuisman.nz/2017/08/au-freeview-kodi-add-on.html</website>
-    <news>Use mjh master url (not direct url)</news>
+    <news>Use new matthuisman module</news>
   </extension>
 </addon>
